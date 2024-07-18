@@ -14,7 +14,7 @@ for zone in $zones; do
         # Extract IP address from the zone file
         ip=$(awk '/^\s*@?\s*IN\s*A\s+/{print $NF}' "/etc/bind/db.$zone" | head -n 1)
         
-        # Format data for display
+        # Format data for displays
         data+=" $counter $zone $ip"
         ((counter++))
     fi
