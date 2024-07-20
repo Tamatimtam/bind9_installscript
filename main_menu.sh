@@ -16,7 +16,7 @@ main_menu() {
 
     case $choice in
         "Install / Uninstall BIND9")
-            ./install_bind9.sh
+            ./install_bind9.sh 
             ;;
         "Show Current DNS Settings")
             ./show_dns_settings.sh

@@ -16,8 +16,7 @@ remove_dns_setting() {
     sudo rm -f /etc/bind/db.$domain_name
 }
 
-# Loop to prompt user until a valid domain name is entered
-while true; do
+# Loop to prompt user until a valid domain name is entered  
     # Prompt user for domain name
     domain_name=$(zenity --entry --title="Remove DNS Setting" --text="Enter the domain name to remove:")
 
