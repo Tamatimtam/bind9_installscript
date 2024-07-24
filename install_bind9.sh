@@ -51,8 +51,13 @@ EOF
 
 # Function to set local nameserver to 127.0.0.1
 configure_resolv_conf() {
-    echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf > /dev/null
+    {
+        echo "nameserver 127.0.0.1"
+        echo "nameserver 8.8.8.8"
+        echo "nameserver 1.1.1.1"
+    } | sudo tee /etc/resolv.conf > /dev/null
 }
+
 
 # Check if BIND9 is installed and notify user
 if check_bind9_installed; then
@@ -79,6 +84,9 @@ configure_forwarders
 # Set local nameserver to 127.0.0.1
 configure_resolv_conf
 
+sudo systemctl daemon-reload
+sudo systemctl enable named
+sleep 3
 # Restart BIND9
 sudo systemctl start bind9.service
 sudo systemctl status bind9.service
