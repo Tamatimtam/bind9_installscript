@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Function to check if BIND9 is installed
+# check if BIND9 is already installed
 check_bind9_installed() {
     dpkg -l | grep bind9 > /dev/null 2>&1
     return $?
@@ -14,7 +14,7 @@ uninstall_bind9() {
     sudo rm -rf /etc/bind
 }
 
-# Function to install BIND9
+
 install_bind9() {
     sudo apt install -y bind9
 }
@@ -49,7 +49,7 @@ options {
 EOF
 }
 
-# Function to set local nameserver to 127.0.0.1
+# Function to set local nameserver
 configure_resolv_conf() {
     {
         echo "nameserver 127.0.0.1"
@@ -81,7 +81,7 @@ install_bind9 | zenity --progress --title="Installing BIND9" --pulsate --auto-cl
 # Configure default forwarders
 configure_forwarders
 
-# Set local nameserver to 127.0.0.1
+# Set local nameserver in /etc/resolv.conf
 configure_resolv_conf
 
 sudo systemctl daemon-reload
