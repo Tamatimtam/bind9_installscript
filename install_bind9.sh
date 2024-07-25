@@ -31,13 +31,15 @@ options {
     directory "/var/cache/bind";
 
     forwarders {
-        1.1.1.1; # cloudflare DNS
-	8.8.8.8; # google public DNS
+        1.1.1.1; # Cloudflare DNS
+	8.8.8.8; # Google Public DNS
     };
-
+    
+    # Activating DNS security validation
     dnssec-validation auto;
     listen-on-v6 { any; };
 
+    # Limiting response from user
     rate-limit { 
         responses-per-second 5; 
         window 5; 
@@ -51,7 +53,7 @@ include "/etc/bind/named.conf.options";
 include "/etc/bind/named.conf.local";
 include "/etc/bind/named.conf.default-zones";
 
-// Logging configuration
+# Logging configuration
 logging {
     channel default_log {
         file "/var/log/named/named.log" versions 3 size 5M;
@@ -66,7 +68,7 @@ logging {
 EOF
 }
 
-# Function to set local nameserver to 127.0.0.1
+# Function to set local nameserver to 127.0.0.1 and public nameserver to 1.1.1.1
 configure_resolv_conf() {
     echo -e "nameserver 127.0.0.1\nnameserver 1.1.1.1" | sudo tee /etc/resolv.conf > /dev/null
 }
