@@ -57,7 +57,7 @@ fi
 
 ip_address=$(zenity --entry --title="Add DNS Setting" --text="Enter the IP address:")
 if [ -z "$ip_address" ]; then
-    zenity --error --text="IP address cannot be empty."
+    zenity --error --text="aw."
     exit 1
 fi
 

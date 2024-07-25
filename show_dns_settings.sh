@@ -12,13 +12,17 @@ for zone in $zones; do
     # Read DNS settings from zone file
     if [ -f "/etc/bind/db.$zone" ]; then
         # Extract IP address from the zone file
-        ip=$(awk '/^\s*@?\s*IN\s*A\s+/{print $NF}' "/etc/bind/db.$zone" | head -n 1)
+        ip=$(grep -oP '(\d{1,3}\.){3}\d{1,3}' "/etc/bind/db.$zone" | sort | uniq | head -n 1)
         
         # Format data for display
         data+=" $counter $zone $ip"
         ((counter++))
     fi
 done
+
+# Output data
+echo $data
+
 
 # Display data in a formatted table using zenity
 choice=$(zenity --list --width=600 --height=400 --title="DNS Settings" --column="No" --column="Domain" --column="IP" \
