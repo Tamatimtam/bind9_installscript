@@ -5,7 +5,7 @@ data=""
 counter=1
 
 # Parse BIND9 configuration to get zone names
-zones=$(grep '^zone "' /etc/bind/named.conf.local | sed 's/.*zone "\(.*\)".*/\1/')
+zones=$(grep '^zone "' /etc/bind/named.conf.local | sed 's/.*zone "\(.*\)".*/\1/') # sed Substitute/EVERYTHING(.*) until zone "EVERTHING HERE/(.*/)" .*
 
 # Iterate over each zone
 for zone in $zones; do
@@ -26,7 +26,7 @@ echo $data
 
 # Display data in a formatted table using zenity
 choice=$(zenity --list --width=600 --height=400 --title="DNS Settings" --column="No" --column="Domain" --column="IP" \
-        $data  --ok-label="Edit" --cancel-label="Back")
+        $data  --ok-label="Edit" --cancel-label="Back" 2>/dev/null)
 
 # Check user choice and execute corresponding script
 case $? in

@@ -2,7 +2,7 @@
 
 # Check if user is root
 if [[ $EUID -ne 0 ]]; then
-    zenity --error --text="This script must be run as root."
+    zenity --error --text="This script must be run as root." 2>/dev/null
     exit 1
 fi
 
@@ -12,7 +12,7 @@ main_menu() {
         "Install / Uninstall BIND9"\
         "Show Current DNS Settings" \
         "Add DNS Setting" \
-        "Remove DNS Setting")
+        "Remove DNS Setting" 2>/dev/null)
 
     case $choice in
         "Install / Uninstall BIND9")
@@ -28,7 +28,7 @@ main_menu() {
             ./remove_dns_setting.sh
             ;;
         *)
-            zenity --error --text="Action Canceled, Exiting dashboard."
+            zenity --error --text="Action Canceled, Exiting dashboard." 2>/dev/null
             ;;
     esac
 }

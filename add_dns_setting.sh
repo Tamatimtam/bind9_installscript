@@ -49,21 +49,21 @@ validate_ip_address() {
 }
 
 # Prompt user for domain name and IP address
-domain_name=$(zenity --entry --title="Add DNS Setting" --text="Enter the domain name:")
+domain_name=$(zenity --entry --title="Add DNS Setting" --text="Enter the domain name:" 2>/dev/null) 
 if [ -z "$domain_name" ]; then
-    zenity --error --text="Domain name cannot be empty."
+    zenity --error --text="Domain name cannot be empty." 2>/dev/null
     exit 1
 fi
 
-ip_address=$(zenity --entry --title="Add DNS Setting" --text="Enter the IP address:")
+ip_address=$(zenity --entry --title="Add DNS Setting" --text="Enter the IP address:" 2>/dev/null)
 if [ -z "$ip_address" ]; then
-    zenity --error --text="aw."
+    zenity --error --text="aw." 2>/dev/null
     exit 1
 fi
 
 # Validate IP address format
 if ! validate_ip_address "$ip_address"; then
-    zenity --error --text="Invalid IP address format or range."
+    zenity --error --text="Invalid IP address format or range." 2>/dev/null
     exit 1
 fi
 
@@ -72,6 +72,6 @@ add_dns_setting "$domain_name" "$ip_address"
 
 # Restart BIND9 to apply changes
 sudo systemctl restart bind9
-zenity --info --text="New DNS setting added and BIND9 restarted."
+zenity --info --text="New DNS setting added and BIND9 restarted." 2>/dev/null
 
 exit 0

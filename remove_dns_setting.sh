@@ -18,12 +18,12 @@ remove_dns_setting() {
 
 # Loop to prompt user until a valid domain name is entered  
     # Prompt user for domain name
-    domain_name=$(zenity --entry --title="Remove DNS Setting" --text="Enter the domain name to remove:")
+    domain_name=$(zenity --entry --title="Remove DNS Setting" --text="Enter the domain name to remove:" 2>/dev/null)
 
     # Check if domain exists in named.conf.local
     if check_domain_exists "$domain_name"; then
         # Prompt user to confirm removal
-        zenity --question --text="Domain '$domain_name' found in named.conf.local. Remove?" --title="Confirm Removal" --ok-label="Yes, remove" --cancel-label="No, cancel"
+        zenity --question --text="Domain '$domain_name' found in named.conf.local. Remove?" --title="Confirm Removal" --ok-label="Yes, remove" --cancel-label="No, cancel" 2>/dev/null
         response=$?
         if [ $response -eq 0 ]; then
             # Remove the DNS setting
@@ -31,14 +31,13 @@ remove_dns_setting() {
 
             # Restart BIND9 to apply changes
             sudo systemctl restart bind9
-            zenity --info --text="DNS setting for '$domain_name' removed and BIND9 restarted."
+            zenity --info --text="DNS setting for '$domain_name' removed and BIND9 restarted." 2>/dev/null
             break
         else
-            zenity --info --text="No action taken."
+            zenity --info --text="No action taken." 2>/dev/null
             exit 0
         fi
     else
         # Domain not found, prompt user to input again
-        zenity --error --text="Domain '$domain_name' not found in named.conf.local. Please enter a valid domain name."
+        zenity --error --text="Domain '$domain_name' not found in named.conf.local. Please enter a valid domain name." 2>/dev/null
     fi
-done
