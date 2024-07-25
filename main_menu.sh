@@ -12,7 +12,8 @@ main_menu() {
         "Install / Uninstall BIND9"\
         "Show Current DNS Settings" \
         "Add DNS Setting" \
-        "Remove DNS Setting" 2>/dev/null)
+        "Remove DNS Setting"\
+        "See BIND9 Logs" 2>/dev/null)
 
     case $choice in
         "Install / Uninstall BIND9")
@@ -26,6 +27,9 @@ main_menu() {
             ;;
         "Remove DNS Setting")
             ./remove_dns_setting.sh
+            ;;
+        "See BIND9 Logs")
+            ./logs.sh
             ;;
         *)
             zenity --error --text="Action Canceled, Exiting dashboard." 2>/dev/null

@@ -47,6 +47,27 @@ options {
     listen-on-v6 { any; };
 };
 EOF
+
+
+    # Configure named.conf
+    sudo tee /etc/bind/named.conf > /dev/null <<EOF
+include "/etc/bind/named.conf.options";
+include "/etc/bind/named.conf.local";
+include "/etc/bind/named.conf.default-zones";
+
+# Logging configuration
+logging {
+    channel default_log {
+        file "/var/log/named/named.log" versions 3 size 5M;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+    category default { default_log; };
+    category security { default_log; };
+};
+EOF
 }
 
 # Function to set local nameserver to 127.0.0.1
@@ -56,22 +77,22 @@ configure_resolv_conf() {
 
 # Check if BIND9 is installed and notify user
 if check_bind9_installed; then
-    zenity --question --text="BIND9 is already installed. Do you want to reinstall it? This will remove all previous configurations." --title="Reinstall BIND9" --ok-label="Yes, reinstall" --cancel-label="No, cancel"
+    zenity --question --text="BIND9 is already installed. Do you want to reinstall it? This will remove all previous configurations." --title="Reinstall BIND9" --ok-label="Yes, reinstall" --cancel-label="No, cancel" 2>/dev/null
     response=$?
     if [ $response -eq 0 ]; then
-        zenity --info --text="Uninstalling BIND9..."
-        uninstall_bind9 | zenity --progress --title="Uninstalling BIND9" --pulsate --auto-close --no-cancel
+        zenity --info --text="Uninstalling BIND9..." 2>/dev/null
+        uninstall_bind9 | zenity --progress --title="Uninstalling BIND9" --pulsate --auto-close --no-cancel 2>/dev/null
     else
-        zenity --info --text="No action taken."
+        zenity --info --text="No action taken." 2>/dev/null
         exit 0
     fi
 else
-    zenity --info --text="BIND9 is not installed."
+    zenity --info --text="BIND9 is not installed." 2>/dev/null
 fi
 
 # Install BIND9
-zenity --info --text="Installing BIND9..."
-install_bind9 | zenity --progress --title="Installing BIND9" --pulsate --auto-close --no-cancel
+zenity --info --text="Installing BIND9..." 2>/dev/null
+install_bind9 | zenity --progress --title="Installing BIND9" --pulsate --auto-close --no-cancel 2>/dev/null
 
 # Configure default forwarders
 configure_forwarders
@@ -83,4 +104,4 @@ configure_resolv_conf
 sudo systemctl start bind9.service
 sudo systemctl status bind9.service
 
-zenity --info --text="BIND9 installation complete."
+zenity --info --text="BIND9 installation complete." 2>/dev/null

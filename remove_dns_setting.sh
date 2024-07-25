@@ -32,7 +32,6 @@ remove_dns_setting() {
             # Restart BIND9 to apply changes
             sudo systemctl restart bind9
             zenity --info --text="DNS setting for '$domain_name' removed and BIND9 restarted." 2>/dev/null
-            break
         else
             zenity --info --text="No action taken." 2>/dev/null
             exit 0
