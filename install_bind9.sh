@@ -101,7 +101,9 @@ configure_forwarders
 configure_resolv_conf
 
 # Restart BIND9
-sudo systemctl start bind9.service
-sudo systemctl status bind9.service
+sudo systemctl daemon-reload
+sudo systemctl enable named
+sleep 3
+sudo systemctl start bind9
 
 zenity --info --text="BIND9 installation complete." 2>/dev/null
