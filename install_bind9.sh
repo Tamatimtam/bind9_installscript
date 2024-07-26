@@ -56,8 +56,15 @@ options {
 };
 EOF
 
-    # Create log directory if it doesn't exist
+# Ensure the log directory exists and has correct permissions
     sudo mkdir -p /var/log/named
+    sudo chown bind:bind /var/log/named
+    sudo chmod 750 /var/log/named
+
+# Ensure the log file exists and has correct permissions
+    sudo touch /var/log/named/named.log
+    sudo chown bind:bind /var/log/named/named.log
+    sudo chmod 640 /var/log/named/named.log
     
     # Configure named.conf
     sudo tee /etc/bind/named.conf > /dev/null <<EOF
