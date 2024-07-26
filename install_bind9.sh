@@ -42,13 +42,23 @@ options {
     // If BIND logs error messages about the root key being expired,
     // you will need to update your keys.  See https://www.isc.org/bind-keys
     //========================================================================
+
+    # Activate dnssec for security
     dnssec-validation auto;
 
     listen-on-v6 { any; };
+    
+    # Rate limit for responsing user request
+    rate-limit { 
+        responses-per-second 5; 
+        window 5; 
+    };
 };
 EOF
 
-
+    # Create log directory if it doesn't exist
+    sudo mkdir -p /var/log/named
+    
     # Configure named.conf
     sudo tee /etc/bind/named.conf > /dev/null <<EOF
 include "/etc/bind/named.conf.options";
@@ -56,6 +66,7 @@ include "/etc/bind/named.conf.local";
 include "/etc/bind/named.conf.default-zones";
 
 # Logging configuration
+    
 logging {
     channel default_log {
         file "/var/log/named/named.log" versions 3 size 5M;
